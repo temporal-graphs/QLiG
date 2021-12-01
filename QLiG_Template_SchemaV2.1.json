@@ -1,0 +1,461 @@
+{
+    "$id": "QLiG_Template_SchemaV2.1.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "QLiG Template Schema Version 2.1",
+    "description": "Defines a template representing a scenario subgraph to find in the world graph.",
+	"author": "Sumit.Purohit@pnnl.gov",
+	"properties": 
+    {
+        "name": 
+        {
+            "type": "string",
+            "description": "Name of this JSON template"
+        },
+        "summary":
+        {
+            "type": "string",
+            "description": "Brief summary of the scenario it represents"
+        },
+        "nodedef":
+        {
+            "type": "array",
+            "description": "Defines nodes that should be matched in the world graph",
+            "items": { "$ref": "#/definitions/nodedef" }
+        },
+        "edgedef":
+        {
+            "type": "array",
+            "description": "Defines edges that should be matched in the world graph",
+            "items": { "$ref": "#/definitions/edgedef" }
+        },
+        "geoConstraints":
+        {
+            "type": "array",
+            "description": "Defines geo-spatial constraints that should be matched in the world graph (e.g., distances between nodes)",
+            "items": { "$ref": "#/definitions/geoConstraint" }
+        },
+        "timeConstraints":
+        {
+            "type": "array",
+            "description": "Defines temporal constraints that should be matched in the world graph (e.g., distance in time between nodes)",
+            "items": { "$ref": "#/definitions/timeConstraint" }
+        },
+		"structdef":
+		{
+			"type": "array",
+			"description": "Defines a connected subgraph/structure that should be match in the world graph",
+            "items": { "$ref": "#/definitions/structdef" }
+		},
+	    "pathdef":
+        {
+            "type": "array",
+            "description": "Defines a path in the world graph.",
+            "items": { "$ref": "#/definitions/pathdef" }
+        },
+        "pathConstraints":
+        {
+            "type": "array",
+            "description": "Defines path constraints that should be matched in the world graph.",
+            "items": { "$ref": "#/definitions/pathConstraints" }
+        },
+        "structuralConstraints":
+        {
+            "type": "array",
+            "description": "Defines structural constraints that should be matched in the world graph.",
+            "items": { "$ref": "#/definitions/structuralConstraints" }
+        },
+		"membershipConstraints":
+		{
+            "type": "array",
+            "description": "Defines membership constraints that should be matched in the world graph.",
+            "items": { "$ref": "#/definitions/membershipConstraints" }
+        }
+    },
+    "definitions":
+    {
+        "nodedef":
+        {
+            "type": "object",
+            "required": [ "template_id", "importance" ],
+            "description": "Defines a node we should be finding in the world graph",
+            "properties":
+            {
+                "template_id":
+                {
+                    "type": "string",
+                    "description": "Unique ID assigned to this node for purposes of this template. Does not match the node ID in the world graph."
+                },
+                "importance":
+                {
+                    "type": "number",
+                    "description": "A weighting of how important this node is to the scenario. A smaller number means *more* important."
+                },
+                "node_type":
+                {
+                    "type": "array",
+                    "description": "A list of rdf:types from our ontology that this node could possibly match to. If this property is not present, then any rdf:type is a valid match."
+                },
+                "linkTarget":
+                {
+                    "type": "string",
+                    "description": "The reference to the knowledge base that this node is expected to match. This is one of the node attributes found in the GDF file. If this property is not present, then any argument is a valid match."
+                },
+				"submission_nodeset" : 
+				{
+					"type" : "array",
+					"description": "Array of node instances that map to this node definition."
+				}
+            }
+        },
+        "edgedef":
+        {
+            "type": "object",
+            "required": [ "template_id", "importance", "node1", "node2" ],
+            "description": "Defines an edge we should be finding in the world graph",
+            "properties":
+            {
+                "template_id":
+                {
+                    "type": "string",
+                    "description": "Unique ID assigned to this edge for purposes of this template. Does not match the edge ID in the world graph."
+                },
+                "importance":
+                {
+                    "type": "number",
+                    "description": "A weighting of how important this edge is to the scenario. A smaller number means *more* important."
+                },
+                "node1":
+                {
+                    "type": "array",
+                    "description": "The source node for this edge. A list of nodes (using their template_id) that should be considered an acceptable match."
+                },
+                "node2":
+                {
+                    "type": "array",
+                    "description": "The destination node for this edge. A list of nodes (using their template_id) that should be considered an acceptable match."
+                },
+                "edge_type":
+                {
+                    "type": "array",
+                    "description": "A list of rdf:types from our ontology that this edge could possibly match to. If this property is not present, then any rdf:type is a valid match."
+                },
+                "argument":
+                {
+                    "type": "array",
+                    "description": "A list of arguments from our ontology that this edge could possibly match to. If this property is not present, then any argument is a valid match."
+                },
+				"submission_edgeset" : 
+				{
+					"type" : "array",
+					"description": "Array of edge instances that map to this edge definition."
+				}
+            }
+        },
+		"structdef":
+		{
+			
+            "type": "object",
+            "required": [ "template_id", "importance" , "submission_nodeset" , "submission_edgeset"],
+            "description": "Defines a set of connected subgraphs/structures that should be match in the world graph",
+            "properties":
+            {
+				"template_id":
+                {
+                    "type": "string",
+                    "description": "Unique ID assigned to this subgraph. Does not match with any ID in the world graph."
+                },
+                "importance":
+                {
+                    "type": "number",
+                    "description": "A weighting of how important this node is to the scenario. A smaller number means *more* important."
+                },
+				"submission_nodeset" : 
+				{
+					"type" : "array",
+					"description": "Array of nodes that should be part of this subgraph."
+				},
+				"submission_edgeset" :
+				{
+					"type" : "array",
+					"description": "Array of edges that should be part of this subgraph."
+				},
+                "node_type":
+                {
+                    "type": "array",
+                    "description": "A list of node rdf:types (listed as node_type) from our ontology that a node could possibly match to. If this property is not present, then any rdf:type is a valid match."
+                },
+				"edge_type":
+                {
+                    "type": "array",
+                    "description": "A list of edge rdf:types (listed as edge_type) from our ontology that an edge could possibly match to. If this property is not present, then any rdf:type is a valid match."
+                }
+			}
+		},
+		"pathdef":
+		{
+			
+            "type": "object",
+            "required": [ "template_id", "importance","source", "target" ,"submission_nodeset" , "submission_edgeset"],
+            "description": "Defines a set of paths in the world graph",
+            "properties":
+            {
+				"template_id":
+                {
+                    "type": "string",
+                    "description": "Unique ID assigned to this subgraph. Does not match with any ID in the world graph."
+                },
+                "importance":
+                {
+                    "type": "number",
+                    "description": "A weighting of how important this node is to the scenario. A smaller number means *more* important."
+                },
+				"source" : 
+				{
+					"type" : "array",
+					"description": "A list of nodedef OR a structdef that can be the source of this path. In case of a structdef, any nodedef which is part of this structdef can be the source."
+				},
+				"target" :
+				{
+					"type" : "array",
+					"description": "A nodedef OR a structdef that should be the target of this path. In case of a structdef, any nodedef which is part of this structdef can be the target."
+				},
+				"submission_nodeset" : 
+				{
+					"type" : "array",
+					"description": "Array of nodes that should be part of this path."
+				},
+				"submission_edgeset" :
+				{
+					"type" : "array",
+					"description": "Array of edges that should be part of this path."
+				},
+                "node_type":
+                {
+                    "type": "array",
+                    "description": "A list of node rdf:types (listed as node_type) from our ontology that a node could possibly match to. If this property is not present, then any rdf:type is a valid match."
+                },
+				"edge_type":
+                {
+                    "type": "array",
+                    "description": "A list of edge rdf:types (listed as edge_type)  from our ontology that an edge could possibly match to. If this property is not present, then any rdf:type is a valid match."
+                }
+			}
+		},
+        "geoConstraint":
+        {
+            "type": "object",
+            "required": [ "template_id", "importance", "node1", "node2", "units" ],
+            "description": "Defines a geospatial constraint between two nodes in our template",
+            "properties":
+            {
+                "template_id": 
+                {
+                    "type": "string",
+                    "description": "Unique ID assigned to this constraint for purposes of this template"
+                },
+                "importance":
+                {
+                    "type": "number",
+                    "description": "A weighting of how important this constraint is to the scenario. A smaller number means *more* important."
+                },
+                "node1":
+                {
+                    "type": "string",
+                    "description": "The template_id of one of the nodes in the constraint"
+                },
+                "node2":
+                {
+                    "type": "string",
+                    "description": "The template_id of one of the nodes in the constraint"
+                },
+                "units":
+                {
+                    "type": "string",
+                    "description": "The unit of measure for this distance constraint. Expect to see 'meters' here."
+                },
+                "minValue":
+                {
+                    "type": "number",
+                    "description": "Minimum distance expected between these two nodes"
+                },
+                "maxValue":
+                {
+                    "type": "number",
+                    "description": "Maximum distance expected between these two nodes"
+                }
+            }
+        },
+        "timeConstraint":
+        {
+            "type": "object",
+            "required": [ "template_id", "importance", "node1", "node2", "units" ],
+            "description": "Defines a temporal constraint between two nodes in our template",
+            "properties":
+            {
+                "template_id": 
+                {
+                    "type": "string",
+                    "description": "Unique ID assigned to this constraint for purposes of this template"
+                },
+                "importance":
+                {
+                    "type": "number",
+                    "description": "A weighting of how important this constraint is to the scenario. A smaller number means *more* important."
+                },
+                "node1":
+                {
+                    "type": "string",
+                    "description": "The template_id of the node in this constraint that occurs *before* the other node"
+                },
+                "node2":
+                {
+                    "type": "string",
+                    "description": "The template_id of the node in this constraint that occurs *after* the other node"
+                },
+                "units":
+                {
+                    "type": "string",
+                    "description": "The unit of measure for this distance constraint. Expect to see 'days' here."
+                },
+                "minValue":
+                {
+                    "type": "number",
+                    "description": "Minimum distance in time expected between these two nodes"
+                },
+                "maxValue":
+                {
+                    "type": "number",
+                    "description": "Maximum distance in time expected between these two nodes"
+                }
+			}	
+		},
+		"pathConstraints":
+		{
+			"type": "object",
+			"required": [ "template_id", "importance","path_id", "min_hops", "max_hops"],
+			"description": "Defines a path constraint between two nodes in our template",
+			"properties":
+			{
+				"template_id": 
+				{
+					"type": "string",
+					"description": "Unique ID assigned to this constraint for purposes of this template"
+				},
+				"importance":
+				{
+					"type": "number",
+					"description": "A weighting of how important this constraint is to the scenario. A smaller number means *more* important."
+				},
+				"path_id" :
+				{
+					"type": "array",
+					"description": "A list of IDs of the paths that this constraint is applied to. A constraint can be reused on multiple paths"
+				},
+				"min_hops" :
+				{
+					"type" : "number",
+					"description": "Minimum number of hops in the path"
+				},
+				"max_hops" :
+				{
+					"type" : "number",
+					"description": "Maximum number of hops in the path"
+				},
+				"type_occurrence_filter" :
+				{	
+					"type" : "object",
+					"description" : "A constraint on number of typed edges along the path.",
+					"properties" :
+					{
+						"edge_type" : 
+						{
+							"type" : "array",
+							"description" : "The type of the edge described in the world graph"
+						},	
+						"values" : 
+						{
+							"type" : "array",
+							"description" : "List of allowed number of type edges along the path. It lists exact values instead of a range"
+						}
+					}
+				
+				}
+				
+			}	
+		},
+		"structuralConstraints":
+		{
+			"type": "object",
+			"required": [ "template_id","struct_id", "importance", "min_num_nodes", "max_num_nodes"],
+			"description": "Defines a structural constraint in the template",
+			"properties":
+			{
+				"template_id": 
+				{
+					"type": "string",
+					"description": "Unique ID assigned to this constraint for purposes of this template"
+				},
+				"struct_id": 
+				{
+					"type": "array",
+					"description": "A list of Unique IDs of the structures i.e. structdefs this constraints applies to."
+				},
+				"importance":
+				{
+					"type": "number",
+					"description": "A weighting of how important this constraint is to the scenario. A smaller number means *more* important."
+				},
+				"min_num_nodes":
+				{
+					"type": "number",
+					"description": "Minimum number of nodes in the structure (i.e. subgraph)."
+				},
+				"max_num_nodes":
+				{
+					"type": "number",
+					"description": "Maximum number of nodes in the structure (i.e. subgraph) "
+				},
+				"min_num_edges":
+				{
+					"type": "number",
+					"description": "Minimum number of edges in the structure (i.e. subgraph)."
+				},
+				"max_num_edges":
+				{
+					"type": "number",
+					"description": "Maximum number of edges in the structure (i.e. subgraph) "
+				}
+			}
+		},
+		"membershipConstraints":
+		{
+			"type": "object",
+			"required": [ "template_id", "component_id", "importance", "submission_nodeset"],
+			"description": "Defines a membership constraint between a node and a structure",
+			"properties":
+			{
+				"template_id": 
+				{
+					"type": "string",
+					"description": "Unique ID assigned to this constraint for purposes of this template"
+				},
+				"component_id": 
+				{
+					"type": "array",
+					"description": "A list of Unique IDs of the components i.e. path OR structures this constraints applies to."
+				},
+				"submission_nodeset" : 
+				{
+					"type" : "array",
+					"description": "Set of nodes that must be part of a structure"
+				},
+				"importance":
+				{
+					"type": "number",
+					"description": "A weighting of how important this constraint is to the scenario. A smaller number means *more* important."
+				},
+			}
+		}
+    
+	}
+}
