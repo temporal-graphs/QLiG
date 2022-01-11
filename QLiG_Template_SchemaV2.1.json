@@ -430,7 +430,7 @@
 		"membershipConstraints":
 		{
 			"type": "object",
-			"required": [ "template_id", "component_id", "importance", "submission_nodeset"],
+			"required": [ "template_id","element_id", "set_id", "importance", "submission_nodeset"],
 			"description": "Defines a membership constraint between a node and a structure",
 			"properties":
 			{
@@ -439,15 +439,25 @@
 					"type": "string",
 					"description": "Unique ID assigned to this constraint for purposes of this template"
 				},
-				"component_id": 
+				"element_id": 
 				{
 					"type": "array",
-					"description": "A list of Unique IDs of the components i.e. path OR structures this constraints applies to."
+					"description": "A list of Unique IDs of the components i.e. node, edge, path, structrue that are part of 'set_id' component described using this constraint."
+				},
+				"set_id": 
+				{
+					"type": "array",
+					"description": "A list of Unique IDs of the components i.e. path OR structures that element_id are part of and described using this constraints."
 				},
 				"submission_nodeset" : 
 				{
 					"type" : "array",
-					"description": "Set of nodes that must be part of a structure"
+					"description": "Set of nodes that must be part of matched structure"
+				},
+				"submission_edgeset" : 
+				{
+					"type" : "array",
+					"description": "Set of edges that must be part of matched structure"
 				},
 				"importance":
 				{
