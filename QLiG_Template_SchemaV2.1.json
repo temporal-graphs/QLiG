@@ -444,6 +444,13 @@
 					"type": "array",
 					"description": "A list of Unique IDs of the components i.e. node, edge, path, structrue that are part of 'set_id' component described using this constraint."
 				},
+				"condition":
+				{
+					"type": "string"
+					"enum": ["true", "false"],
+					"default": "true",
+					"description" : "The condition of the membership test whether the element is part of the set OR not. It supports negation of the membership."
+				},
 				"set_id": 
 				{
 					"type": "array",
