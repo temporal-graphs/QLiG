@@ -188,7 +188,11 @@
                 {
                     "type": "array",
                     "description": "A list of edge rdf:types (listed as edge_type) from our ontology that an edge could possibly match to. If this property is not present, then any rdf:type is a valid match."
-                }
+                },
+				,
+				"membershipConstraints":{},
+				"pathConstraints" : {},
+				"structuralConstraints": {}
 			}
 		},
 		"pathdef":
@@ -238,7 +242,10 @@
                 {
                     "type": "array",
                     "description": "A list of edge rdf:types (listed as edge_type)  from our ontology that an edge could possibly match to. If this property is not present, then any rdf:type is a valid match."
-                }
+                },
+				"membershipConstraints":{},
+				"pathConstraints" : {},
+				"structuralConstraints": {}
 			}
 		},
         "geoConstraint":
