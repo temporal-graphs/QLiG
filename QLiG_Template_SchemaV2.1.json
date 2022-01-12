@@ -124,12 +124,12 @@
                     "type": "number",
                     "description": "A weighting of how important this edge is to the scenario. A smaller number means *more* important."
                 },
-                "node1":
+                "source":
                 {
                     "type": "array",
                     "description": "The source node for this edge. A list of nodes (using their template_id) that should be considered an acceptable match."
                 },
-                "node2":
+                "target":
                 {
                     "type": "array",
                     "description": "The destination node for this edge. A list of nodes (using their template_id) that should be considered an acceptable match."
